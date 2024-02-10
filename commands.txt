@@ -1,0 +1,12 @@
+
+# Build and run mysql docker on this local machine
+cd mysql
+docker volume create mysql-data-volume
+docker build -t mysql_twitter_data .
+docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -v mysql-data-volume:/var/lib/mysql mysql_twitter_data
+
+# Build and run ingestion service docker on this local machine
+cd ingestion
+docker build -t ingestion_image .
+docker run -d --name ingestion-container ingestion_image
+
