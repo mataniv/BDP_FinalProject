@@ -1,0 +1,58 @@
+
+# Build and run mysql docker on this local machine
+cd mysql
+docker volume create mysql-data-volume
+docker build -t mysql_twitter_data .
+docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -v mysql-data-volume:/var/lib/mysql mysql_twitter_data
+
+# Build and run ingestion service docker on this local machine
+cd ingestion
+docker build -t ingestion_image .
+docker run -d --name ingestion-container ingestion_image
+
+# Build and run cassandra cluster on this local machine
+
+docker network create cassandra-net
+docker volume create cassandra-node1-data
+docker volume create cassandra-node2-data
+docker volume create cassandra-node3-data
+
+docker run --name cassandra-node1 --network cassandra-net \
+  -e CASSANDRA_CLUSTER_NAME=MyCluster \
+  -e CASSANDRA_SEEDS=cassandra-node1 \
+  -v cassandra-node1-data:/var/lib/cassandra \
+  -p 9042:9042 \
+  -d cassandra:latest
+
+docker run --name cassandra-node2 --network cassandra-net \
+  -e CASSANDRA_CLUSTER_NAME=MyCluster \
+  -e CASSANDRA_SEEDS=cassandra-node1 \
+  -v cassandra-node2-data:/var/lib/cassandra \
+  -p 9043:9042 \
+  -d cassandra:latest
+
+docker run --name cassandra-node3 --network cassandra-net \
+  -e CASSANDRA_CLUSTER_NAME=MyCluster \
+  -e CASSANDRA_SEEDS=cassandra-node1 \
+  -v cassandra-node3-data:/var/lib/cassandra \
+  -p 9044:9042 \
+  -d cassandra:latest
+
+
+cd cassandra
+docker cp create_database.cql cassandra-node1:/create_database.cql
+docker exec -it cassandra-node1 cqlsh -f /create_database.cql
+
+
+# Test ingestion endpoint
+curl -d '{"content_filter":"germany"}' -H "Content-Type: application/json" -X POST http://localhost:5001/load_records
+curl -d '{"author_filter":"britneyspears"}' -H "Content-Type: application/json" -X POST http://localhost:5001/load_records
+curl -d '{"content_filter":"light","author_filter":"katyperry"}' -H "Content-Type: application/json" -X POST http://localhost:5001/load_records
+
+# Test backend endpoint
+
+curl -d '{"filters":{"author":"britneyspears"}}' -H "Content-Type: application/json" -X POST http://localhost:5002/run_query
+curl -d '{"filters":{"content":"germany"}}' -H "Content-Type: application/json" -X POST http://localhost:5002/run_query
+curl -d '{"filters":{"language":"es"}}' -H "Content-Type: application/json" -X POST http://localhost:5002/run_query
+curl -d '{"filters":{"content":"blalba"}}' -H "Content-Type: application/json" -X POST http://localhost:5002/run_query
+

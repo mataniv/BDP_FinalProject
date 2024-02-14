@@ -1,8 +1,9 @@
 import datetime
+import hashlib
+
 from flask import Flask, request, jsonify
 import pandas as pd
 from cassandra.cluster import Cluster
-from cassandra.query import SimpleStatement
 
 app = Flask(__name__)
 
@@ -40,12 +41,17 @@ def insert_tweet_into_cassandra(tweet, session):
     insert_query = f"""
         INSERT INTO {cassandra_table} 
             (id, tweet_id, author, country, content, language, number_of_likes, number_of_shares, date_time) 
-        VALUES (uuid(), %(tweet_id)s, %(author)s, %(country)s, %(content)s, %(language)s, %(number_of_likes)s, %(number_of_shares)s, %(date_time)s)
+        VALUES (%(id)s, %(tweet_id)s, %(author)s, %(country)s, %(content)s, %(language)s, %(number_of_likes)s, %(number_of_shares)s, %(date_time)s)
         """
     date_time_parse = datetime.datetime.strptime(tweet['date_time'], '%d/%m/%Y %H:%M')
     date_time_formatted = date_time_parse.strftime('%Y-%m-%d %H:%M:%S')
 
+    # Generate deterministic UUID based on relevant fields
+    id_content = f"{tweet['author']}_{tweet['content']}_{tweet['date_time']}"
+    hashed_id = hashlib.md5(id_content.encode('utf-8')).hexdigest()
+
     data = {
+        'id': hashed_id,
         'tweet_id': tweet['id'],
         'author': tweet['author'],
         'country': tweet['country'],
@@ -90,7 +96,7 @@ def ingest_tweets(csv_file_path, author_filter=None, content_filter=None):
 
 
 
-@app.route('/process_input', methods=['POST'])
+@app.route('/load_records', methods=['POST'])
 def process_input():
     csv_file_path = 'data/tweets.csv'
     data = request.json
@@ -105,6 +111,4 @@ def process_input():
 
 
 if __name__ == "__main__":
-    #app.run(host='0.0.0.0', port=5001)
-    csv_file_path = 'data/tweets.csv'
-    ingest_tweets(csv_file_path, '')
+    app.run(host='0.0.0.0', port=5001)

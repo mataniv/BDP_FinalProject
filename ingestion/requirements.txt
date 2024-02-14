@@ -1,5 +1,5 @@
 datetime
-numpy
 flask
 pandas
-mysql-connector-python
+cassandra-driver
+hashlib
