@@ -6,8 +6,11 @@ COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 5001 available to the world outside this container
-EXPOSE 5001
+ENV CONSUMER_KEY=consumer_key
+ENV CONSUMER_SECRET=consumer_secret
+
+
+EXPOSE 5003
 
 # Run app.py when the container launches
-CMD ["python", "ingestion.py"]
+CMD ["python", "post.py"]
