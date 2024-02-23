@@ -1,18 +1,18 @@
 
-# Build and run mysql docker locally
-cd mysql
-docker volume create mysql-data-volume
-docker build -t mysql_twitter_data .
-docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -v mysql-data-volume:/var/lib/mysql mysql_twitter_data
+docker network create cassandra-net
 
-# Build and run ingestion service docker on this local machine
+# Build and run ingestion service docker locally
 cd ingestion
 docker build -t ingestion_image .
-docker run -p 5001:5001 -d --name ingestion-container ingestion_image
+docker run -p 5001:5001 -d --network cassandra-net --name ingestion-container ingestion_image
+
+# Build and run backend docker locally
+cd backend
+docker build -t backend_image .
+docker run -p 5002:5002 -d --network cassandra-net --name backend-container backend_image
 
 # Build and run cassandra cluster locally
 
-docker network create cassandra-net
 docker volume create cassandra-node1-data
 docker volume create cassandra-node2-data
 docker volume create cassandra-node3-data

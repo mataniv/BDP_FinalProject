@@ -8,14 +8,14 @@ from cassandra.cluster import Cluster
 app = Flask(__name__)
 
 # Cassandra database credentials
-cassandra_host = 'localhost'
 cassandra_keyspace = 'twitter_data'
 cassandra_table = 'tweets'
 
 
 # Function to connect to Cassandra database
 def connect_to_cassandra():
-    cluster = Cluster()
+    cluster = Cluster(contact_points=['cassandra-node1','cassandra-node2','cassandra-node3'],port=9042)
+    #cluster = Cluster(contact_points=['localhost'], port=9042)
     return cluster.connect(cassandra_keyspace)
 
 
@@ -23,7 +23,7 @@ def connect_to_cassandra():
 def create_tweets_table(session):
     create_table_query = f"""
     CREATE TABLE IF NOT EXISTS {cassandra_table} (
-        id UUID PRIMARY KEY,
+        id TEXT PRIMARY KEY,
         tweet_id DECIMAL, 
         author TEXT,
         country TEXT,

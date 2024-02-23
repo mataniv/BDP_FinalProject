@@ -4,14 +4,14 @@ from cassandra.cluster import Cluster
 app = Flask(__name__)
 
 # Cassandra database credentials
-cassandra_host = 'localhost'
 cassandra_keyspace = 'twitter_data'
 cassandra_table = 'tweets'
 
 
 # Function to connect to Cassandra database
 def connect_to_cassandra():
-    cluster = Cluster()
+    cluster = Cluster(contact_points=['cassandra-node1','cassandra-node2','cassandra-node3'],port=9042)
+    #cluster = Cluster(contact_points=['localhost'], port=9042)
     return cluster.connect(cassandra_keyspace)
 
 
