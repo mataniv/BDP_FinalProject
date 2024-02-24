@@ -9,8 +9,6 @@ app = Flask(__name__)
 
 # Cassandra database credentials
 cassandra_keyspace = 'twitter_data'
-cassandra_table = 'tweets'
-
 
 # Function to connect to Cassandra database
 def connect_to_cassandra():
@@ -18,28 +16,10 @@ def connect_to_cassandra():
     #cluster = Cluster(contact_points=['localhost'], port=9042)
     return cluster.connect(cassandra_keyspace)
 
-
-# Function to create tweets table if not exists
-def create_tweets_table(session):
-    create_table_query = f"""
-    CREATE TABLE IF NOT EXISTS {cassandra_table} (
-        id TEXT PRIMARY KEY,
-        tweet_id DECIMAL, 
-        author TEXT,
-        country TEXT,
-        content TEXT, 
-        language TEXT,
-        number_of_likes INT,
-        number_of_shares INT,
-        date_time TIMESTAMP)
-        """
-    session.execute(create_table_query)
-
-
 # Function to insert tweet into Cassandra database
 def insert_tweet_into_cassandra(tweet, session):
     insert_query = f"""
-        INSERT INTO {cassandra_table} 
+        INSERT INTO tweets 
             (id, tweet_id, author, country, content, language, number_of_likes, number_of_shares, date_time) 
         VALUES (%(id)s, %(tweet_id)s, %(author)s, %(country)s, %(content)s, %(language)s, %(number_of_likes)s, %(number_of_shares)s, %(date_time)s)
         """
@@ -70,8 +50,6 @@ def ingest_tweets(csv_file_path, author_filter=None, content_filter=None):
     session = cluster
 
     try:
-        # Create tweets table if not exists
-        create_tweets_table(session)
 
         # Read tweets from CSV file based on filters
         df = pd.read_csv(csv_file_path)
