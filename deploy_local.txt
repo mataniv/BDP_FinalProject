@@ -71,3 +71,12 @@ curl -X POST http://localhost:5003/request_tweet_pin
 }
 
 curl -X POST -d "oauth_token=S-xJWgAAAAABsTelAAABjc0-MoI&oauth_token_secret=8JxhdJh4BieWRcpkGnVAjGL2Y8X8G5uk&verifier=8148937&tweet_text=Hello Twitter" http://localhost:5009/post_tweet
+
+
+# Load the ui
+cd ui_app
+docker build -t bdp_ui_app .
+docker run -p 5005:5005 -d --network cassandra-net --name flask-search-app-container bdp_ui_app
+
+
+curl -d '{"filters":{"author":""}}' -H "Content-Type: application/json" -X POST http://localhost:5002/run_query
