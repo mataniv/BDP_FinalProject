@@ -1,10 +1,15 @@
+import os
 from flask import Flask, render_template, request, jsonify
 import requests
 import pandas as pd
-from io import StringIO
 
 # Initialize the Flask application
 app = Flask(__name__)
+
+oauth_token = os.environ.get("OAUTH_TOKEN")
+oauth_token_secret = os.environ.get("OAUTH_TOKEN_SECRET")
+verifier = os.environ.get("VERIFIER")
+
 
 @app.route('/chart-data')
 def chart_data():
@@ -25,12 +30,10 @@ def chart_data():
     else:
         return jsonify({'error': 'Failed to fetch data'}), response.status_code
 
+
 @app.route('/post_tweet', methods=['GET', 'POST'])
 def post_tweet():
     if request.method == 'POST':
-        oauth_token = 'your_oauth_token'
-        oauth_token_secret = 'your_oauth_token_secret'
-        verifier = 'your_verifier'
         tweet_text = request.form.get('tweet_text')
 
         data = {
@@ -56,12 +59,14 @@ def home():
     """
     return render_template('index.html')
 
+
 @app.route('/analytics')
 def analytics():
     """
     This route serves the analytics HTML page that includes the analytics dashboard.
     """
     return render_template('analytics.html')
+
 
 @app.route('/ingestion', methods=['GET', 'POST'])
 def ingestion():
@@ -71,7 +76,7 @@ def ingestion():
     to be processed by the ingestion service.
     """
     if request.method == 'GET':
-        return render_template('load-data.html')
+        return render_template('ingestion.html')
     else:  # Handle the POST request from the ingestion page
         data = request.json
         response = requests.post('http://ingestion-container:5001/load_records', json=data)
@@ -79,6 +84,7 @@ def ingestion():
             return jsonify({'message': 'Processed successfully.'}), 200
         else:
             return jsonify({'message': 'Failed loading.'}), 500
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -95,6 +101,7 @@ def search():
         return jsonify(response.json()), 200
     else:
         return jsonify({'message': 'Error fetching results.'}), 500
+
 
 # Start the Flask development server
 if __name__ == "__main__":
