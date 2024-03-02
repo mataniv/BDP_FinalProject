@@ -58,7 +58,7 @@ curl -d '{"filters":{"content":"blalba"}}' -H "Content-Type: application/json" -
 # Build post service
 cd post
 docker build -t post_image .
-docker run -p 5003:5003 -d -e CONSUMER_KEY="<consumer_key>" -e CONSUMER_SECRET="<consumer_secret>" --name post-container post_image
+docker run -p 5003:5003 -d --network cassandra-net -e CONSUMER_KEY="<consumer_key>" -e CONSUMER_SECRET="<consumer_secret>" --name post-container post_image
 
 # Test post service
 
@@ -71,6 +71,7 @@ curl -X POST http://localhost:5003/request_tweet_pin
 }
 
 curl -X POST -d "oauth_token=S-xJWgAAAAABsTelAAABjc0-MoI&oauth_token_secret=8JxhdJh4BieWRcpkGnVAjGL2Y8X8G5uk&verifier=8148937&tweet_text=Hello Twitter" http://localhost:5009/post_tweet
+
 
 
 # Load the ui
