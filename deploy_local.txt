@@ -58,7 +58,7 @@ curl -d '{"filters":{"content":"blalba"}}' -H "Content-Type: application/json" -
 # Build post service
 cd post
 docker build -t post_image .
-docker run -p 5003:5003 -d -e CONSUMER_KEY="<consumer_key>" -e CONSUMER_SECRET="<consumer_secret>" --name post-container post_image
+docker run -p 5003:5003 -d --network cassandra-net -e CONSUMER_KEY="<consumer_key>" -e CONSUMER_SECRET="<consumer_secret>" --name post-container post_image
 
 # Test post service
 
