@@ -25,6 +25,30 @@ def chart_data():
     else:
         return jsonify({'error': 'Failed to fetch data'}), response.status_code
 
+@app.route('/post_tweet', methods=['GET', 'POST'])
+def post_tweet():
+    if request.method == 'POST':
+        oauth_token = 'your_oauth_token'
+        oauth_token_secret = 'your_oauth_token_secret'
+        verifier = 'your_verifier'
+        tweet_text = request.form.get('tweet_text')
+
+        data = {
+            "oauth_token": oauth_token,
+            "oauth_token_secret": oauth_token_secret,
+            "verifier": verifier,
+            "tweet_text": tweet_text
+        }
+
+        response = requests.post('http://post-container:5003/post_tweet', data=data)
+        if response.status_code == 200:
+            return jsonify({'message': 'Processed successfully.'})
+        else:
+            return jsonify({'message': 'Failed loading.'}), response.status_code
+
+    return render_template('tweet.html')
+
+
 @app.route('/')
 def home():
     """

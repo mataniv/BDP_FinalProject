@@ -11,6 +11,7 @@
         .navbar {
             margin-bottom: 20px;
         }
+
         /* Footer bar style */
         .footer {
             position: fixed;
@@ -25,44 +26,48 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">Tweet Analytics</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/analytics">Analytics</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ingestion">Load Data</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <h1>Analytics Search</h1>
-        <div>
-            <input type="text" id="author" placeholder="Author" class="form-control">
-            <input type="text" id="content" placeholder="Content" class="form-control">
-            <input type="text" id="language" placeholder="Language" class="form-control">
-            <button id="search" class="btn btn-primary mt-2">Search</button>
+        <a class="navbar-brand" href="#">Tweet Analytics</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/analytics">Analytics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ingestion">Load Data</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/post_tweet">Post Tweet</a>
+                </li>
+            </ul>
         </div>
-        <div id="results"></div>
-        <canvas id="dateChart"></canvas>
-        <canvas id="likesHistogram"></canvas>
-        <canvas id="wordCountChart"></canvas>
     </div>
-        <div class="footer">
-        &copy;2024 Tweet Analytics by Ram Portugali, Matan Niv and Gil Semo
+</nav>
+
+<div class="container">
+    <h1>Analytics Search</h1>
+    <div>
+        <input type="text" id="author" placeholder="Author" class="form-control">
+        <input type="text" id="content" placeholder="Content" class="form-control">
+        <input type="text" id="language" placeholder="Language" class="form-control">
+        <button id="search" class="btn btn-primary mt-2">Search</button>
     </div>
-    <script src="/static/js/search.js"></script>
+    <div id="results"></div>
+    <canvas id="dateChart"></canvas>
+    <canvas id="likesHistogram"></canvas>
+    <canvas id="wordCountChart"></canvas>
+</div>
+<div class="footer">
+    &copy;2024 Tweet Analytics by Ram Portugali, Matan Niv and Gil Semo
+</div>
+<script src="/static/js/search.js"></script>
 </body>
 </html>
