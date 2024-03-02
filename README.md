@@ -2,6 +2,14 @@
 
 <img width="763" alt="image" src="https://github.com/mataniv/BDP_FinalProject/assets/38129502/79103152-6cc8-425c-9cdd-d0b728220810">
 
+| Service |Purpose  |Input |Output  |
+|--|--|--|--|
+|**Ingestion Service**|--|--|--|
+|**Cassandra Cluster**|--|--|--|
+|**Backend**|--|--|--|
+|**Post Service**|--|--|--|
+|**UI App**|--|--|--|
+
 # First Step: Deploy the app locally using Docker
 
 The following steps provide a quick guide on setting up and running the components of the project locally using Docker.
