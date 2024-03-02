@@ -77,7 +77,4 @@ curl -X POST -d "oauth_token=S-xJWgAAAAABsTelAAABjc0-MoI&oauth_token_secret=8Jxh
 # Load the ui
 cd ui_app
 docker build -t bdp_ui_app .
-docker run -p 5005:5005 -d --network cassandra-net --name flask-search-app-container bdp_ui_app
-
-
-curl -d '{"filters":{"author":""}}' -H "Content-Type: application/json" -X POST http://localhost:5002/run_query
+docker run -p 5005:5005 -d --network cassandra-net -e OAUTH_TOKEN="<oauth_token>" -e OAUTH_TOKEN_SECRET="<oauth_token_secret>" -e VERIFIER="<verifier>" --name flask-search-app-container bdp_ui_app
