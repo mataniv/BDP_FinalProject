@@ -18,7 +18,6 @@ function fetchDataForCharts() {
         console.error('Error fetching data:', error);
     });
 }
-// ... rest of your existing `renderTweetsPerYearChart` and `renderTopAuthorsTable` functions
 
 function renderTweetsPerYearChart(tweetsByYear) {
     const ctxYear = document.getElementById('tweetsByYearChart').getContext('2d');
@@ -50,7 +49,7 @@ function renderTopAuthorsTable(topAuthors) {
         let row = tableBody.insertRow();
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
-        cell1.innerHTML = author.tweetCount; // This should represent the author's name
-        cell2.innerHTML = author.count; // This should represent the tweet count
+        cell1.innerHTML = author.tweetCount; //  author's name
+        cell2.innerHTML = author.count; //  tweet count
     });
 }

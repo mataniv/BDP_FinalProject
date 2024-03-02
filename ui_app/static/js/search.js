@@ -37,7 +37,7 @@ $(document).ready(function() {
     });
 });
 
-// Utility function to clear all charts
+//  clear all charts
 function clearCharts() {
     ['dateChart', 'likesHistogram', 'wordCountChart'].forEach(clearCanvas);
 }
