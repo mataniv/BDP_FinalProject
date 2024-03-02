@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Load Data - Tweet Analytics</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">Tweet Analytics</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analytics">Analytics</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/load-data">Load Data <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Load Data Into Database</h1>
+    <div>
+        <input type="text" id="author_filter" placeholder="Filter by Author" class="form-control">
+        <input type="text" id="content_filter" placeholder="Filter by Content" class="form-control">
+        <button id="loadData" class="btn btn-success mt-2">Process</button>
+    </div>
+    <div id="loadResults"></div>
+</div>
+
+</div>
+<div class="footer">
+    &copy; 2024 Tweet Analytics by Ram Portugali, Matan Niv and Gil Semo
+</div>
+<script src="/static/js/search.js"></script>
+</body>
+</html>

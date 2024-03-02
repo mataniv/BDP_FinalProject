@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Tweet Analytics</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .table {
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        th, td {
+            text-align: center;
+            padding: 10px;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Tweet Analytics</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analytics">Analytics</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/ingestion">Load Data </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Welcome to Tweet Analytics</h1>
+        <p>This application allows you to analyze tweet data and load new data into the database.</p>
+        <canvas id="tweetsByYearChart"></canvas>
+        <table id="topAuthors" class="table">
+            <thead>
+                <tr>
+                    <th>Author</th>
+                    <th>Number of Tweets</th>
+                </tr>
+            </thead>
+            <tbody id="topAuthorsBody">
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        &copy; 2024 Tweet Analytics by Ram Portugali, Matan Niv and Gil Semo
+    </div>
+    <script src="/static/js/homeCharts.js"></script>
+</body>
+</html>

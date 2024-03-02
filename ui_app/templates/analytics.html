@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Custom styles for this template -->
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+        /* Footer bar style */
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Tweet Analytics</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analytics">Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ingestion">Load Data</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Analytics Search</h1>
+        <div>
+            <input type="text" id="author" placeholder="Author" class="form-control">
+            <input type="text" id="content" placeholder="Content" class="form-control">
+            <input type="text" id="language" placeholder="Language" class="form-control">
+            <button id="search" class="btn btn-primary mt-2">Search</button>
+        </div>
+        <div id="results"></div>
+        <canvas id="dateChart"></canvas>
+        <canvas id="likesHistogram"></canvas>
+        <canvas id="wordCountChart"></canvas>
+    </div>
+        <div class="footer">
+        &copy;2024 Tweet Analytics by Ram Portugali, Matan Niv and Gil Semo
+    </div>
+    <script src="/static/js/search.js"></script>
+</body>
+</html>
