@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Home - Tweet Analytics</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .navbar {
             margin-bottom: 20px;
@@ -11,28 +12,40 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="/">Tweet Analytics</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/analytics">Analytics</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ingestion">Load Data</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <h1>Welcome to Tweet Analytics</h1>
-        <p>This application allows you to analyze tweet data and load new data into the database.</p>
+        <a class="navbar-brand" href="/">Tweet Analytics</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analytics">Analytics</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ingestion">Load Data <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
     </div>
+</nav>
+<div class="container">
+    <h1>Welcome to Tweet Analytics</h1>
+    <p>This application allows you to analyze tweet data and load new data into the database.</p>
+    <canvas id="tweetsByYearChart"></canvas>
+    <table id="topAuthors" class="table">
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Number of Tweets</th>
+        </tr>
+        </thead>
+        <tbody id="topAuthorsBody"> <!-- Added an ID here -->
+        <!-- Table rows will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+</div>
+<script src="/static/js/homeCharts.js"></script>
 </body>
 </html>
