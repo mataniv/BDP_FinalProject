@@ -65,20 +65,17 @@ def analytics():
 
 @app.route('/ingestion', methods=['GET', 'POST'])
 def ingestion():
-    """
-    This route handles both GET and POST requests for the data ingestion functionality.
-    GET request returns the load-data HTML page, and POST request handles the incoming data
-    to be processed by the ingestion service.
-    """
-    if request.method == 'GET':
-        return render_template('load-data.html')
-    else:  # Handle the POST request from the ingestion page
-        data = request.json
+    if request.method == 'POST':
+        data = request.get_json()
+        # Make sure to use request.get_json() to parse JSON data correctly
+
         response = requests.post('http://ingestion-container:5001/load_records', json=data)
         if response.status_code == 200:
             return jsonify({'message': 'Processed successfully.'}), 200
         else:
-            return jsonify({'message': 'Failed loading.'}), 500
+            return jsonify({'message': 'Failed loading.'}), response.status_code
+
+    return render_template('load-data.html')
 
 @app.route('/search', methods=['POST'])
 def search():
