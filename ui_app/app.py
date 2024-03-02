@@ -80,7 +80,7 @@ def ingestion():
         else:
             return jsonify({'message': 'Failed loading.'}), response.status_code
 
-    return render_template('load-data.html')
+    return render_template('ingestion.html')
 
 
 @app.route('/search', methods=['POST'])
