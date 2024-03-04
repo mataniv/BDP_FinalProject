@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import pandas as pd
-from io import StringIO
 
 # Initialize the Flask application
 app = Flask(__name__)
+
+oauth_token = os.environ.get("OAUTH_TOKEN")
+oauth_token_secret = os.environ.get("OAUTH_TOKEN_SECRET")
+verifier = os.environ.get("VERIFIER")
+
 
 @app.route('/chart-data')
 def chart_data():
@@ -25,13 +29,13 @@ def chart_data():
     else:
         return jsonify({'error': 'Failed to fetch data'}), response.status_code
 
-@app.route('/post_tweet', methods=['POST','GET'])
+
+@app.route('/post_tweet', methods=['GET', 'POST'])
 def post_tweet():
     if request.method == 'POST':
-        # Your OAuth credentials should be retrieved from a secure location
-        oauth_token = 'your_oauth_token'
-        oauth_token_secret = 'your_oauth_token_secret'
-        verifier = request.form.get('twitterVerifier')  # Retrieve verifier from form
+        oauth_token = oauth_token
+        oauth_token_secret = oauth_token_secret
+        verifier = request.form.get('twitterVerifier')
         tweet_text = request.form.get('tweet_text')
 
         data = {
