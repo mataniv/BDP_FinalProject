@@ -12,13 +12,18 @@
 |**Post Service**|--|--|--|
 |**UI App**|--|--|--|
 
+## Prerequisites
+Make sure you have installed the following apps:
+1. Docker
+2. Minikube
+
+Clone the repository:
+
+	git clone https://github.com/mataniv/BDP_FinalProject.git
+
 # First Step: Deploy the app locally using Docker
 
 The following steps provide a quick guide on setting up and running the components of the project locally using Docker.
-
-## Prerequisites
-Make sure you have Docker installed on your machine.
-
 
 ## 1. Cassandra Cluster Setup
 Create a Docker network for Cassandra:
@@ -108,3 +113,6 @@ Build and run the Cassandra cluster locally:
 	docker run -p 5005:5005 -d --network cassandra-net -e OAUTH_TOKEN="<oauth_token>" -e OAUTH_TOKEN_SECRET="<oauth_token_secret>" -e VERIFIER="<verifier>" --name flask-search-app-container bdp_ui_app
 
 Now, your project components are up and running locally. Access the UI app at http://localhost:5005 to interact with the system.
+
+# Deploy Application Into Minikube Cluster
+
