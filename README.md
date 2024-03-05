@@ -232,7 +232,7 @@ NAME         CLASS   HOSTS   ADDRESS        PORTS   AGE
 ui-ingress   nginx   *       192.168.49.2   80      2m15s
 ```
 
-We can notice that our ingress service is running.
+You can notice that our ingress service is running.
 
 ## 5. Setup Cassandra Database
 
@@ -241,15 +241,37 @@ To setup cassandra database into cluster we need to run this following commands.
 	kubectl cp cassandra/create_database.cql final-project/cassandra-0:/create_database.cql
  	kubectl exec -it cassandra-0 -n final-project -- /bin/bash -c "cqlsh -f /create_database.cql"
 
-## 6. Test Endpoints
+## 6. Sanity Check
 
-Run this command to go inside a pod’s container. For testing purpose let’s go inside the ui
-container. Some examples:
-	kubectl exec -it ui-deployment-5d965f954d-6xnqw -n final-project -- bash
+You can run this command to go inside a pod’s container. For testing purpose let’s go inside the ui container. Some examples:
+	
+ 	kubectl exec -it ui-deployment-5d965f954d-6xnqw -n final-project -- bash
+  	apt update
+	apt install curl -y
  	curl -d '{"content_filter":"germany"}' -H "Content-Type:application/json" -X POST http://ingestion-service.final-project:5001/load_records
 	curl -d '{"filters":{"author":"britneyspears"}}' -H "Content-Type: application/json" -X POST http://backend-service.final-project:5002/run_query
 
-## 7. Stop The Minikube Cluster
+## 7. Access The Application
+In macOS environment you need to execute the following command:
+
+	kubectl port-forward --address 0.0.0.0 svc/ui-container -n final-project 8080:5005 &
+
+Now we can access the application interface via: http://localhost:8080/
+### <ins>Home page</ins>
+![image](https://github.com/mataniv/BDP_FinalProject/assets/38129502/e0d3bae1-b3eb-4306-a883-8440a32dc5d3)
+
+
+### <ins>Analytics Page</ins>
+![image](https://github.com/mataniv/BDP_FinalProject/assets/38129502/e4353f4d-8e02-4af9-81ea-3e67fa5ecec6)
+![image](https://github.com/mataniv/BDP_FinalProject/assets/38129502/034d5059-8e75-4228-b47f-5febae2da6e5)
+
+### <ins>Load Data Page</ins>
+<img width="522" alt="image" src="https://github.com/mataniv/BDP_FinalProject/assets/38129502/c966949f-5a71-4bb9-a054-748467eb9724">
+
+### <ins>Post Tweet Page</ins>
+<img width="714" alt="image" src="https://github.com/mataniv/BDP_FinalProject/assets/38129502/42f13110-59ca-4a87-b496-7a16ad9bd131">
+
+## 8. Stop The Minikube Cluster
 
  	minikube stop
 
