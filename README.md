@@ -116,3 +116,140 @@ Now, your project components are up and running locally. Access the UI app at ht
 
 # Deploy Application Into Minikube Cluster
 
+## 1. Configure Codebase Based on Our Kubernetes Services
+
+	cp -r backend minikube_backend
+	cp -r ingestion minikube_ingestion
+	cp -r ui_app minikube_ui_app
+
+ Replace the lines in the following files:
+
+ `minikube_backend/backend.py`:
+
+	cluster = Cluster(contact_points=['cassandra-node1','cassandra-node2','cassandra-node3'],port=9042)
+	# cluster = Cluster(contact_points=['cassandra-service.final-project'],port=9042)
+
+`minikube_ingestion/ingestion.py`:
+
+	cluster = Cluster(contact_points=['cassandra-node1', 'cassandra-node2', 'cassandra-node3'], port=9042)
+	# cluster = Cluster(contact_points=['cassandra-service.final-project'],port=9042)
+
+`minikube_ui_app/app.py`:
+
+	 response = requests.post('http://backend-container:5002/run_query', json={"filters": {"content": ""}})
+	 # response = requests.post('http://backend-service.final-project:5002/run_query', json={"filters": {"content": ""}})
+	
+	 response = requests.post('http://post-container:5003/post_tweet', data=data)
+	 # response = requests.post('http://post-service.final-project:5003/post_tweet', data=data)
+	
+	 response = requests.post('http://ingestion-container:5001/load_records', json=data)
+	 # response = requests.post('http://ingestion-service.final-project:5001/load_records', json=data)
+	
+	 response = requests.post('http://backend-container:5002/run_query', json={'filters': data['filters']})
+	 # response = requests.post('http://backend-service.final-project:5002/run_query', json={'filters': data['filters']})
+
+## 2. Prepare Docker Images
+
+In the BDP_FinalProject directory Run the following commands to prepare docker images
+with specific tag names.
+
+	docker build -t matanniv01/backend-service:v1.3 ./minikube_backend
+	docker build -t matanniv01/ingestion-service:v1.3 ./minikube_ingestion
+	docker build -t matanniv01/post-service:v1.3 ./post
+	docker build -t matanniv01/frontend-service:v1.3 ./minikube_ui_app
+
+ Now we push the docker images into Docker Hub:
+
+	docker login
+	docker push matanniv01/backend-service:v1.3
+	docker push matanniv01/ingestion-service:v1.3
+	docker push matanniv01/post-service:v1.3
+	docker push matanniv01/frontend-service:v1.3
+
+ The necessary yml files can be found in the `minikube` directory:
+ 
+```console
+ minikube/
+├── backend.yml
+├── cassandra-pv.yml
+├── cassandra.yml
+├── frontend.yml
+├── ingestion.yml
+├── ingress.yml
+└── post.yml
+```
+
+## 3. Deploy Application Into Minikube Cluster
+
+	minikube start
+	alias kubectl="minikube kubectl --"
+ 
+Simply run the below command, and your application will be seamlessly added to the
+Kubernetes Minikube cluster, ready to leverage its robust orchestration capabilities for
+deployment, scaling, and management.
+
+	kubectl create secret generic post-secrets --from-literal=CONSUMER_KEY='your_consumer_key' \
+	        --from-literal=CONSUMER_SECRET='your_consumer_secret' \
+	        -n final-project
+
+&nbsp;
+
+	kubectl create secret generic frontend-secrets --from-literal=OAUTH_TOKEN='your_oauth_token' \
+		--from-literal=OAUTH_TOKEN_SECRET='your_oauth_token_secret' \
+		--from-literal=VERIFIER='your_verifier' -n final-project
+
+&nbsp;
+
+	kubectl create namespace final-project
+	kubectl apply -f minikube/backend.yml
+	kubectl apply -f minikube/frontend.yml
+	kubectl apply -f minikube/post.yml
+	kubectl apply -f minikube/ingestion.yml
+	kubectl apply -f minikube/cassandra-pv.yml
+	kubectl apply -f minikube/cassandra.yml
+	minikube addons enable ingress
+	kubectl apply -f minikube/ingress.yml
+
+To check that all services are running:
+
+	kubectl get pods -n final-project
+ 
+```console
+NAME                                    READY   STATUS    RESTARTS   AGE
+backend-deployment-67fcdbf7bc-qb92l     1/1     Running   0          2m39s
+cassandra-0                             1/1     Running   0          2m20s
+ingestion-deployment-85f9f69476-ptff8   1/1     Running   0          2m26s
+post-deployment-79bb4d8b44-9kgsf        1/1     Running   0          2m30s
+ui-deployment-5d965f954d-6xnqw          1/1     Running   0          2m34s
+```
+
+Run this command to check the ingress controller:
+
+	kubectl get ingress -n final-project
+
+ ```console
+NAME         CLASS   HOSTS   ADDRESS        PORTS   AGE
+ui-ingress   nginx   *       192.168.49.2   80      2m15s
+```
+
+We can notice that our ingress service is running.
+
+## 5. Setup Cassandra Database
+
+To setup cassandra database into cluster we need to run this following commands.
+
+	kubectl cp cassandra/create_database.cql final-project/cassandra-0:/create_database.cql
+ 	kubectl exec -it cassandra-0 -n final-project -- /bin/bash -c "cqlsh -f /create_database.cql"
+
+## 6. Test Endpoints
+
+Run this command to go inside a pod’s container. For testing purpose let’s go inside the ui
+container. Some examples:
+	kubectl exec -it ui-deployment-5d965f954d-6xnqw -n final-project -- bash
+ 	curl -d '{"content_filter":"germany"}' -H "Content-Type:application/json" -X POST http://ingestion-service.final-project:5001/load_records
+	curl -d '{"filters":{"author":"britneyspears"}}' -H "Content-Type: application/json" -X POST http://backend-service.final-project:5002/run_query
+
+## 7. Stop The Minikube Cluster
+
+ 	minikube stop
+
