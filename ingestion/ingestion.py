@@ -10,11 +10,13 @@ app = Flask(__name__)
 # Cassandra database credentials
 cassandra_keyspace = 'twitter_data'
 
+
 # Function to connect to Cassandra database
 def connect_to_cassandra():
-    cluster = Cluster(contact_points=['cassandra-node1','cassandra-node2','cassandra-node3'],port=9042)
-    #cluster = Cluster(contact_points=['localhost'], port=9042)
+    cluster = Cluster(contact_points=['cassandra-node1', 'cassandra-node2', 'cassandra-node3'], port=9042)
+    # cluster = Cluster(contact_points=['cassandra-service.final-project'],port=9042)
     return cluster.connect(cassandra_keyspace)
+
 
 # Function to insert tweet into Cassandra database
 def insert_tweet_into_cassandra(tweet, session):
@@ -73,7 +75,6 @@ def ingest_tweets(csv_file_path, author_filter=None, content_filter=None):
         session.shutdown()
 
 
-
 @app.route('/load_records', methods=['POST'])
 def process_input():
     csv_file_path = 'data/tweets.csv'
@@ -89,4 +90,4 @@ def process_input():
 
 
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0', port=5001)
+    app.run(debug=True, host='0.0.0.0', port=5001)

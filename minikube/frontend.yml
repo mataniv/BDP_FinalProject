@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-deployment
+  namespace: final-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+        - name: ui
+          image: matanniv01/frontend-service:v1.3  # Your Docker image
+          ports:
+            - containerPort: 5005
+          env:  # Define environment variables here
+            - name: OAUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: OAUTH_TOKEN
+            - name: OAUTH_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: OAUTH_TOKEN_SECRET
+            - name: VERIFIER
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secrets
+                  key: VERIFIER
+          resources: {}		# Add CPU and RAM limit here if needed.
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-container
+  namespace: final-project
+spec:
+  type: NodePort
+  ports:
+  - port: 5005
+    targetPort: 5005
+  selector:
+    app: ui

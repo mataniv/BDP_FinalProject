@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post a Tweet - Tweet Analytics</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        /* Additional styles can be added here if needed */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Tweet Analytics</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analytics">Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ingestion">Load Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active"  href="/post_tweet">Post Tweet</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Post a Tweet</h1>
+       <form id="tweetForm">
+    <div class="form-group">
+        <label for="tweetText">Tweet Text:</label>
+        <textarea id="tweetText" name="tweet_text" class="form-control" rows="3" required></textarea>
+    </div>
+    <!-- New input for Twitter Verifier -->
+    <div class="form-group">
+        <label for="twitterVerifier">Twitter Verifier:</label>
+        <input type="text" id="twitterVerifier" name="twitterVerifier" class="form-control" placeholder="Enter Twitter Verifier" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+        <p id="message"></p>
+    </div>
+    <div class="footer">
+        &copy; 2024 Tweet Analytics by Ram Portugali, Matan Niv and Gil Semo
+    </div>
+    <script src="/static/js/tweetSubmission.js"></script>
+</body>
+</html>

@@ -10,8 +10,8 @@ cassandra_table = 'tweets'
 
 # Function to connect to Cassandra database
 def connect_to_cassandra():
-    cluster = Cluster(contact_points=['cassandra-node1','cassandra-node2','cassandra-node3'],port=9042)
-    #cluster = Cluster(contact_points=['localhost'], port=9042)
+    cluster = Cluster(contact_points=['cassandra-node1', 'cassandra-node2', 'cassandra-node3'], port=9042)
+    # cluster = Cluster(contact_points=['cassandra-service.final-project'],port=9042)
     return cluster.connect(cassandra_keyspace)
 
 

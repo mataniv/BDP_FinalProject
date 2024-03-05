@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend-deployment
+  namespace: final-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: matanniv01/backend-service:v1.3
+          ports:
+            - containerPort: 5002
+              protocol: TCP
+          resources: {}
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend-service
+  namespace: final-project
+spec:
+  ports:
+  - port: 5002
+    targetPort: 5002
+  selector:
+    app: backend
+  type: ClusterIP

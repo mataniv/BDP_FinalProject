@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-deployment
+  namespace: final-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post
+  template:
+    metadata:
+      labels:
+        app: post
+    spec:
+      containers:
+      - name: post
+        image: matanniv01/post-service:v1.3
+        ports:
+        - containerPort: 5003
+          protocol: TCP
+        env:  # Define environment variables here
+        - name: CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: post-secrets
+              key: CONSUMER_KEY
+        - name: CONSUMER_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: post-secrets
+              key: CONSUMER_SECRET
+        resources: {}  # Add CPU and RAM limit here if needed.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-service
+  namespace: final-project
+spec:
+  ports:
+  - port: 5003
+    targetPort: 5003
+  selector:
+    app: post
+  type: ClusterIP

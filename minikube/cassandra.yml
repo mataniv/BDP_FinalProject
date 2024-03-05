@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cassandra
+  namespace: final-project
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cassandra
+  template:
+    metadata:
+      labels:
+        app: cassandra
+    spec:
+      containers:
+      - name: cassandra
+        image: cassandra:latest
+        ports:
+        - containerPort: 9042
+        volumeMounts:
+        - name: cassandra-storage
+          mountPath: /var/lib/cassandra
+        resources:
+          requests:
+            memory: "12Gi"
+            cpu: "500m"
+          limits:
+            memory: "12Gi"
+            cpu: "3000m"
+      volumes:
+      - name: cassandra-storage
+        persistentVolumeClaim:
+          claimName: cassandra-pvc
+  serviceName: cassandra
+
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: cassandra-service
+  namespace: final-project
+spec:
+  ports:
+    - name: cql
+      port: 9042
+      targetPort: 9042
+  selector:
+    app: cassandra
+  clusterIP: None
+  

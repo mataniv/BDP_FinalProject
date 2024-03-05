@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ingestion-deployment
+  namespace: final-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingestion
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ingestion
+    spec:
+      containers:
+        - name: ingestion
+          image: matanniv01/ingestion-service:v1.3
+          ports:
+            - containerPort: 5001
+              protocol: TCP
+          resources: {}		# Add CPU and RAM limit here if needed.
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingestion-service
+  namespace: final-project
+spec:
+  ports:
+   -  port: 5001
+      targetPort: 5001
+  selector:
+    app: ingestion
+  type: ClusterIP

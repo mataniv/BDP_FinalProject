@@ -20,6 +20,7 @@ def chart_data():
     top authors, to be used in the frontend charts.
     """
     response = requests.post('http://backend-container:5002/run_query', json={"filters": {"content": ""}})
+    # response = requests.post('http://backend-service.final-project:5002/run_query', json={"filters": {"content": ""}})
     if response.status_code == 200:
         data = response.json().get('result', [])
         df = pd.DataFrame(data)
@@ -49,6 +50,7 @@ def post_tweet():
 
         # Make sure to handle the response properly here
         response = requests.post('http://post-container:5003/post_tweet', data=data)
+        # response = requests.post('http://post-service.final-project:5003/post_tweet', data=data)
         if response.status_code == 200:
             return jsonify({'message': 'Processed successfully.'})
         else:
@@ -72,6 +74,7 @@ def analytics():
     """
     return render_template('analytics.html')
 
+
 @app.route('/ingestion', methods=['GET', 'POST'])
 def ingestion():
     if request.method == 'POST':
@@ -79,12 +82,14 @@ def ingestion():
         # Make sure to use request.get_json() to parse JSON data correctly
 
         response = requests.post('http://ingestion-container:5001/load_records', json=data)
+        # response = requests.post('http://ingestion-service.final-project:5001/load_records', json=data)
         if response.status_code == 200:
             return jsonify({'message': 'Processed successfully.'}), 200
         else:
             return jsonify({'message': 'Failed loading.'}), response.status_code
 
     return render_template('ingestion.html')
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -94,6 +99,7 @@ def search():
     """
     data = request.json
     response = requests.post('http://backend-container:5002/run_query', json={'filters': data['filters']})
+    # response = requests.post('http://backend-service.final-project:5002/run_query', json={'filters': data['filters']})
     if response.status_code == 200:
         results = response.json().get('result', [])
         if not results:
@@ -101,6 +107,7 @@ def search():
         return jsonify(response.json()), 200
     else:
         return jsonify({'message': 'Error fetching results.'}), 500
+
 
 # Start the Flask development server
 if __name__ == "__main__":
