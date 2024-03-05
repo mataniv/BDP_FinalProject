@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.onsubmit = function(event) {
         event.preventDefault();
         var tweetText = document.getElementById('tweetText').value;
+        var twitterVerifier = document.getElementById('twitterVerifier').value; // Get the verifier value
         var messageElement = document.getElementById('message');
 
         fetch('/post_tweet', {
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: 'tweet_text=' + encodeURIComponent(tweetText)
+            body: `tweet_text=${encodeURIComponent(tweetText)}&twitterVerifier=${encodeURIComponent(twitterVerifier)}` // Send verifier in the body
         })
         .then(function(response) {
             return response.json();

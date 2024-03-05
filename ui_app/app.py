@@ -1,4 +1,3 @@
-import os
 from flask import Flask, render_template, request, jsonify
 import requests
 import pandas as pd
@@ -34,6 +33,9 @@ def chart_data():
 @app.route('/post_tweet', methods=['GET', 'POST'])
 def post_tweet():
     if request.method == 'POST':
+        oauth_token = oauth_token
+        oauth_token_secret = oauth_token_secret
+        verifier = request.form.get('twitterVerifier')
         tweet_text = request.form.get('tweet_text')
 
         data = {
@@ -43,13 +45,14 @@ def post_tweet():
             "tweet_text": tweet_text
         }
 
+        # Make sure to handle the response properly here
         response = requests.post('http://post-container:5003/post_tweet', data=data)
         if response.status_code == 200:
             return jsonify({'message': 'Processed successfully.'})
         else:
             return jsonify({'message': 'Failed loading.'}), response.status_code
-
-    return render_template('tweet.html')
+    else:
+        return render_template('tweet.html')
 
 
 @app.route('/')
@@ -67,7 +70,6 @@ def analytics():
     """
     return render_template('analytics.html')
 
-
 @app.route('/ingestion', methods=['GET', 'POST'])
 def ingestion():
     if request.method == 'POST':
@@ -81,7 +83,6 @@ def ingestion():
             return jsonify({'message': 'Failed loading.'}), response.status_code
 
     return render_template('ingestion.html')
-
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -98,7 +99,6 @@ def search():
         return jsonify(response.json()), 200
     else:
         return jsonify({'message': 'Error fetching results.'}), 500
-
 
 # Start the Flask development server
 if __name__ == "__main__":

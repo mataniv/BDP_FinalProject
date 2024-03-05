@@ -47,13 +47,18 @@
     </nav>
     <div class="container">
         <h1>Post a Tweet</h1>
-        <form id="tweetForm">
-            <div class="form-group">
-                <label for="tweetText">Tweet Text:</label>
-                <textarea id="tweetText" class="form-control" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+       <form id="tweetForm">
+    <div class="form-group">
+        <label for="tweetText">Tweet Text:</label>
+        <textarea id="tweetText" name="tweet_text" class="form-control" rows="3" required></textarea>
+    </div>
+    <!-- New input for Twitter Verifier -->
+    <div class="form-group">
+        <label for="twitterVerifier">Twitter Verifier:</label>
+        <input type="text" id="twitterVerifier" name="twitterVerifier" class="form-control" placeholder="Enter Twitter Verifier" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
         <p id="message"></p>
     </div>
     <div class="footer">
