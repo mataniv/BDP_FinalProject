@@ -4,13 +4,15 @@
 
 <img width="763" alt="image" src="https://github.com/mataniv/BDP_FinalProject/assets/38129502/79103152-6cc8-425c-9cdd-d0b728220810">
 
+&nbsp;
+
 | Service |Purpose  |Input |Output  |
 |--|--|--|--|
-|**Ingestion Service**|--|--|--|
-|**Cassandra Cluster**|--|--|--|
-|**Backend**|--|--|--|
-|**Post Service**|--|--|--|
-|**UI App**|--|--|--|
+|**Ingestion Service**|Recieve requests for ingestion by the UI application.| filter (by author or content)|Insert records to the database|
+|**Cassandra Cluster**|A persistence database for the application|Queries & Insertions| Table records|
+|**Backend**|A backend service for the UI application |Requests to retrieve tweets|Return records to the UI application|
+|**Post Service**|Submit a tweet to the Twitter platform using the API|Text|A tweet on Twitter|
+|**UI App**|Present insights visually and empower users to ingest tweets into the system|Users have the capability to request information retrieval based on content or author, and additionally, they can post tweets|insights|
 
 ## Prerequisites
 Make sure you have installed the following apps:
@@ -269,7 +271,7 @@ Now we can access the application interface via: http://localhost:8080/
 <img width="522" alt="image" src="https://github.com/mataniv/BDP_FinalProject/assets/38129502/c966949f-5a71-4bb9-a054-748467eb9724">
 
 ### <ins>Post Tweet Page</ins>
-<img width="714" alt="image" src="https://github.com/mataniv/BDP_FinalProject/assets/38129502/42f13110-59ca-4a87-b496-7a16ad9bd131">
+<img width="945" alt="image" src="https://github.com/mataniv/BDP_FinalProject/assets/38129502/a848b7ba-1552-4b38-ba42-c88c941179de">
 
 ## 8. Stop The Minikube Cluster
 
